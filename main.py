@@ -1,32 +1,54 @@
 class ExpenseManager:
     def __init__(self):
         self.dic = {}
+        self.count = 1
 
     def add_expense(self):
         name = input("\nExpense: ")
-        amount = int(input("Amount: "))
+        try:
+            amount = int(input("Amount: "))
 
-        self.dic.update({name:amount})
-        print("\nExpense added successfully.",end="")
+        except:
+            print("\nAmount are only number\nExpense added failed!")
+
+        else:
+            if amount > 0:
+                self.dic.update({f"{self.count}. {name}":amount})
+                self.count += 1
+                print("\nExpense added successfully.",end="")
+
+            else:
+                print("\nAmount are only positive\nExpense added failed!")
+
 
     def show_expenses(self):
         print("\nExpenses\n"+20*"-")
-        for key, value in self.dic.items():
-            print(key,end="")
-            length = 18-(len(key)+len(str(value)))
-            print(length*" ",+value)
+        if self.dic != {}:
+            for key, value in self.dic.items():
+                name = key.split(". ", 1)[1]
+                print(name,end="")
+                length = 18-(len(name)+len(str(value)))
+                print(length*" ", value)
+
+        else:
+            print("No expense added!")
 
     def show_total(self):
         count =0
         print()
-        for key, value in self.dic.items():
-            print(key,end="")
-            length = 18-(len(key)+len(str(value)))
-            print(length*" ",+value)
-            count += value
+        if self.dic != {}:
+            for key, value in self.dic.items():
+                name = key.split(". ", 1)[1]
+                print(name,end="")
+                length = 18-(len(name)+len(str(value)))
+                print(length*" ", value)
+                count += value
 
-        length = 13-len(str(count))
-        print(20*"-" + "\nTotal" + length*" ", count)
+            length = 13-len(str(count))
+            print(20*"-" + "\nTotal" + length*" ", count)
+
+        else:
+            print("No expense added!")
 
 def opening():
     print(5*"="+" Business Utility System "+5*"=")
@@ -34,11 +56,12 @@ def opening():
     return int(input("Choose: "))
 
 if __name__ == "__main__":
+    manager = ExpenseManager()
+
     while True:
         choose1 = opening()
 
         if choose1 == 1:
-            manager = ExpenseManager()
 
             while True:
                 print("\n\n"+5*"="+" Expense Manager "+5*"=")
@@ -63,3 +86,6 @@ if __name__ == "__main__":
         elif choose1 == 2:
             print("\nThank you!\n")
             break
+
+        else:
+            print("\nInvaild Choise!!\n")
