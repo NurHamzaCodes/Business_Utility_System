@@ -3,8 +3,10 @@ class ExpenseManager:
         self.dic = {}
         self.count = 1
 
+
     def add_expense(self):
         name = input("\nExpense: ")
+
         try:
             amount = int(input("Amount: "))
 
@@ -13,6 +15,7 @@ class ExpenseManager:
 
         else:
             if amount > 0:
+
                 self.dic.update({f"{self.count}. {name}":amount})
                 self.count += 1
                 print("\nExpense added successfully.",end="")
@@ -23,7 +26,9 @@ class ExpenseManager:
 
     def show_expenses(self):
         print("\nExpenses\n"+20*"-")
+
         if self.dic != {}:
+
             for key, value in self.dic.items():
                 name = key.split(". ", 1)[1]
                 print(name,end="")
@@ -32,6 +37,7 @@ class ExpenseManager:
 
         else:
             print("No expense added!")
+
 
     def show_total(self):
         count =0
@@ -50,6 +56,42 @@ class ExpenseManager:
         else:
             print("No expense added!")
 
+
+    def delete(self):
+        print("\nExpenses\n"+20*"-")
+        count = 1
+
+        if self.dic != {}:
+            
+            for key, value in self.dic.items():
+                name = str(count)+". "+key.split(". ", 1)[1]
+                print(name,end="")
+                length = 18-(len(name)+len(str(value)))
+                print(length*" ", value)
+                count += 1
+
+        else:
+            print("No expense added!") 
+
+
+        try:
+            n = int(input("\nChoose Expense you want to delete: "))
+
+        except:
+            print("\nNumber only!\nExpense Delete Failed!")
+
+        else:
+            try:
+                del self.dic[list(self.dic.keys())[n-1]]
+
+            except:
+                print(f"\nExpense No: {n} Never Exist!\nExpense Delete Failed!")
+
+            else:
+                print("\nExpense Delete Successfully!")
+
+
+        
 def opening():
     print(5*"="+" Business Utility System "+5*"=")
     print("\n1. Expense Manager\n2. Exit\n")
@@ -65,7 +107,7 @@ if __name__ == "__main__":
 
             while True:
                 print("\n\n"+5*"="+" Expense Manager "+5*"=")
-                print("\n1. Add Expense\n2. Show Expenses\n3. Show Total\n4. Back\n")
+                print("\n1. Add Expense\n2. Show Expenses\n3. Show Total\n4. Edit Expense\n5. Delete Expense\n6. Back\n")
 
                 choose2 = int(input("Choose: "))
 
@@ -80,6 +122,12 @@ if __name__ == "__main__":
                         manager.show_total()
 
                     case 4:
+                        pass
+
+                    case 5:
+                        manager.delete()
+
+                    case 6:
                         print()
                         break
 
