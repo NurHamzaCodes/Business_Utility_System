@@ -14,7 +14,7 @@ class ExpenseManager:
             print("\nAmount are only number\nExpense added failed!")
 
         else:
-            if amount > 0:
+            if amount >= 0:
 
                 self.dic.update({f"{self.count}. {name}":amount})
                 self.count += 1
@@ -91,11 +91,88 @@ class ExpenseManager:
                 print("\nExpense Delete Successfully!")
 
 
+    def edit(self):
+        print("\nExpenses\n"+20*"-")
+        count = 1
+        
+        if self.dic != {}:
+                    
+            for key, value in self.dic.items():
+                name = str(count)+". "+key.split(". ", 1)[1]
+                print(name,end="")
+                length = 18-(len(name)+len(str(value)))
+                print(length*" ", value)
+                count += 1
+
+            try:
+                    n = int(input("\nChoose Expense you want to edit: "))
+                    
+            except:
+                    print("\nNumber only!\nExpense Edit Failed!")
+                    
+            else:
+                if n > len(self.dic.keys()):
+                    print(f"\nExpense No: {n} Never Exist!\nExpense Edit Failed!")
+            
+                else:
+                    try:
+                        choose3 = int(input("\nWhat is need to change:\n\t1. Expense name\n\t2. Amount\nChoose: "))
+
+                    except:
+                        print("\nNumber only!\nExpense Edit Failed!")
+
+                    else:
+                        if choose3 == 1:
+                            new_dic = {}
+                            name = input("\nGive new name: ")
+
+                            for k,v in self.dic.items():
+                                if k == list(self.dic.keys())[n-1]:
+                                    k = str(k.split(". ", 1)[0])+". "+name
+
+                                new_dic.update({k:v})
+
+                            self.dic = new_dic
+
+                        elif choose3 == 2:
+                            try:
+                                amount = int(input("\nGive new amount: "))
+
+                            except:
+                                print("\nNumber only!\nExpense Edit Failed!")
+
+                            else:
+                                if amount < 0:
+                                    print("\nAmount are only positive\nExpense edit failed!")
+
+                                else:
+                                    self.dic[list(self.dic.keys())[n-1]] = amount
+
+                        else:
+                            print("\nInvaild Choice!\nExpense Edit Failed!")
+        
+        else:
+            print("\nNo expense added!") 
+        
         
 def opening():
     print(5*"="+" Business Utility System "+5*"=")
     print("\n1. Expense Manager\n2. Exit\n")
-    return int(input("Choose: "))
+    
+    try:
+        choose1 = int(input("Choose: "))
+
+    except:
+        print("\nonly number!\n")
+        return opening()
+
+    else:
+        if choose1 in [1,2]:
+            return choose1
+
+        else:
+            print("\nInvaild Choice!")
+            return opening()
 
 if __name__ == "__main__":
     manager = ExpenseManager()
@@ -109,31 +186,37 @@ if __name__ == "__main__":
                 print("\n\n"+5*"="+" Expense Manager "+5*"=")
                 print("\n1. Add Expense\n2. Show Expenses\n3. Show Total\n4. Edit Expense\n5. Delete Expense\n6. Back\n")
 
-                choose2 = int(input("Choose: "))
+                try:
+                    choose2 = int(input("Choose: "))
 
-                match choose2:
-                    case 1:
-                        manager.add_expense()
+                except:
+                    print("\nNumber only!")
 
-                    case 2:
-                        manager.show_expenses()
+                else:
+                    if choose2 in [1,2,3,4,5,6]:
+                        match choose2:
+                            case 1:
+                                manager.add_expense()
 
-                    case 3:
-                        manager.show_total()
+                            case 2:
+                                manager.show_expenses()
 
-                    case 4:
-                        pass
+                            case 3:
+                                manager.show_total()
 
-                    case 5:
-                        manager.delete()
+                            case 4:
+                                manager.edit()
 
-                    case 6:
-                        print()
-                        break
+                            case 5:
+                                manager.delete()
+
+                            case 6:
+                                print()
+                                break
+
+                    else:
+                        print("\nInvaild Chioce!")
 
         elif choose1 == 2:
             print("\nThank you!\n")
             break
-
-        else:
-            print("\nInvaild Choise!!\n")
