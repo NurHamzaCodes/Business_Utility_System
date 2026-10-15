@@ -7,10 +7,14 @@ class ExpenseManager:
     def add_expense(self):
         name = input("\nExpense: ")
 
+        if name == "" or not name.strip():
+            print("\nExpense name cannot be empty\nExpense added failed!")
+            return
+
         try:
             amount = int(input("Amount: "))
 
-        except:
+        except ValueError:
             print("\nAmount are only number\nExpense added failed!")
 
         else:
@@ -70,25 +74,28 @@ class ExpenseManager:
                 print(length*" ", value)
                 count += 1
 
-        else:
-            print("No expense added!") 
-
-
-        try:
-            n = int(input("\nChoose Expense you want to delete: "))
-
-        except:
-            print("\nNumber only!\nExpense Delete Failed!")
-
-        else:
             try:
-                del self.dic[list(self.dic.keys())[n-1]]
+                n = int(input("\nChoose Expense you want to delete: "))
 
-            except:
-                print(f"\nExpense No: {n} Never Exist!\nExpense Delete Failed!")
+                if n<1:
+                    print("\nInvalid Choose!\nExpense Delete Failed!")
+                    return
+
+            except ValueError:
+                print("\nNumber only!\nExpense Delete Failed!")
 
             else:
-                print("\nExpense Delete Successfully!")
+                try:                    
+                    del self.dic[list(self.dic.keys())[n-1]]
+
+                except IndexError:
+                    print(f"\nExpense No: {n} Never Exist!\nExpense Delete Failed!")
+
+                else:
+                    print("\nExpense Delete Successfully!")
+
+        else:
+            print("No expense added!")
 
 
     def edit(self):
@@ -105,26 +112,31 @@ class ExpenseManager:
                 count += 1
 
             try:
-                    n = int(input("\nChoose Expense you want to edit: "))
+                n = int(input("\nChoose Expense you want to edit: "))
                     
-            except:
-                    print("\nNumber only!\nExpense Edit Failed!")
+            except ValueError:
+                print("\nNumber only!\nExpense Edit Failed!")
                     
             else:
-                if n > len(self.dic.keys()):
+                if 1 > n or n > len(self.dic.keys()):
                     print(f"\nExpense No: {n} Never Exist!\nExpense Edit Failed!")
             
                 else:
                     try:
                         choose3 = int(input("\nWhat is need to change:\n\t1. Expense name\n\t2. Amount\nChoose: "))
 
-                    except:
+                    except ValueError:
                         print("\nNumber only!\nExpense Edit Failed!")
 
                     else:
+
                         if choose3 == 1:
-                            new_dic = {}
                             name = input("\nGive new name: ")
+                            new_dic = {}
+
+                            if name == "" or not name.strip():
+                                print("\nExpense name canot be empty\nExpense added failed!")
+                                return
 
                             for k,v in self.dic.items():
                                 if k == list(self.dic.keys())[n-1]:
@@ -133,12 +145,13 @@ class ExpenseManager:
                                 new_dic.update({k:v})
 
                             self.dic = new_dic
+                            print("\nExpense Edit Successfully!")
 
                         elif choose3 == 2:
                             try:
                                 amount = int(input("\nGive new amount: "))
 
-                            except:
+                            except ValueError:
                                 print("\nNumber only!\nExpense Edit Failed!")
 
                             else:
@@ -147,6 +160,7 @@ class ExpenseManager:
 
                                 else:
                                     self.dic[list(self.dic.keys())[n-1]] = amount
+                                    print("\nExpense Edit Successfully!")
 
                         else:
                             print("\nInvaild Choice!\nExpense Edit Failed!")
@@ -162,7 +176,7 @@ def opening():
     try:
         choose1 = int(input("Choose: "))
 
-    except:
+    except ValueError:
         print("\nonly number!\n")
         return opening()
 
@@ -189,7 +203,7 @@ if __name__ == "__main__":
                 try:
                     choose2 = int(input("Choose: "))
 
-                except:
+                except ValueError:
                     print("\nNumber only!")
 
                 else:
@@ -215,7 +229,7 @@ if __name__ == "__main__":
                                 break
 
                     else:
-                        print("\nInvaild Chioce!")
+                        print("\nInvaild Chioce!\n")
 
         elif choose1 == 2:
             print("\nThank you!\n")
